@@ -96,7 +96,7 @@ public class Information {
     }
 
     public void compareReports() {
-        if (checkMonthReports() && checkYearlyReports()) {
+        if (checkMonthReports() || checkYearlyReports()) {
             System.out.println("Файлы еще не считаны");
             return;
         }
