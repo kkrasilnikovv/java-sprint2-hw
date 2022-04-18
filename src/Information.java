@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Information {
-    private final List<YearlyReport> yearlyReports = Reader.getList();
-    private final Map<Integer, ArrayList<MonthlyReport>> monthReport = Reader.getMonthRep();
-    private final Map<Integer, String> month = fillMap();
+    private final List<YearlyReport> yearlyReports = Reader.getYearlyReports();
+    private final Map<Integer, ArrayList<MonthlyReport>> monthReports = Reader.getMonthRep();
+    private static final Map<Integer, String> month = getMonthNames();
+    private static Information fileInfo = new Information();
 
-    private Map<Integer, String> fillMap() {
+    private static Map<Integer, String> getMonthNames() {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "Январь");
         map.put(2, "Февраль");
@@ -26,7 +27,7 @@ public class Information {
     }
 
     public void infoMonth() {
-        if (checkListAndMap()) {
+        if (checkMonthReports()) {
             System.out.println("Файлы еще не считаны");
             return;
         }
@@ -35,12 +36,12 @@ public class Information {
         String nameBadIncome = "";
         int monthIncome;
 
-        for (Map.Entry<Integer, ArrayList<MonthlyReport>> monthR : monthReport.entrySet()) {
-            monthIncome = monthR.getKey();
+        for (Map.Entry<Integer, ArrayList<MonthlyReport>> monthReport : monthReports.entrySet()) {
+            monthIncome = monthReport.getKey();
             int sumIncome = 0;
             int sumBadIncome = 0;
-            for (int i = 0; i < monthR.getValue().size(); i++) {
-                MonthlyReport m = monthR.getValue().get(i);
+            for (int i = 0; i < monthReport.getValue().size(); i++) {
+                MonthlyReport m = monthReport.getValue().get(i);
                 int sum = m.getQuantity() * m.getSumOfOne();
                 if (!m.isIsExpense() && sum > sumIncome) {
                     sumIncome = sum;
@@ -56,12 +57,16 @@ public class Information {
         }
     }
 
-    public boolean checkListAndMap() {
-        return yearlyReports.isEmpty() || monthReport.isEmpty();
+    public boolean checkYearlyReports() {
+        return yearlyReports.isEmpty();
+    }
+    public boolean checkMonthReports() {
+        return monthReports.isEmpty();
     }
 
+
     public void infoYear() {
-        if (checkListAndMap()) {
+        if (checkYearlyReports()) {
             System.out.println("Файлы еще не считаны");
             return;
         }
@@ -91,12 +96,12 @@ public class Information {
     }
 
     public void compareReports() {
-        if (checkListAndMap()) {
+        if (checkMonthReports() && checkYearlyReports()) {
             System.out.println("Файлы еще не считаны");
             return;
         }
-        Information fileInfo = new Information();
-        for (Map.Entry<Integer, ArrayList<MonthlyReport>> e : monthReport.entrySet()) {
+
+        for (Map.Entry<Integer, ArrayList<MonthlyReport>> e : monthReports.entrySet()) {
             int income = 0;
             int badIncome = 0;
             for (int i = 0; i < e.getValue().size(); i++) {
