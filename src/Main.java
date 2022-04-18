@@ -3,21 +3,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Information information=new Information();
-        Reader reader=new Reader();
-        final String oneMonth = "resources/m.202101.csv";
-        final String twoMonth = "resources/m.202102.csv";
-        final String threeMonth = "resources/m.202103.csv";
+        Information information = new Information();
+        Reader reader = new Reader();
         while (true) {
             printMenu();
             int command = scanner.nextByte();
             switch (command) {
                 case (1): {
-                    reader.readMonthFile();
+                    reader.readMonth();
                     break;
                 }
                 case (2): {
-                        reader.readFileYear();
+                    reader.readYear();
                     break;
                 }
                 case (3): {

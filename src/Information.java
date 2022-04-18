@@ -33,7 +33,7 @@ public class Information {
 
         String nameIncome = "";
         String nameBadIncome = "";
-        int monthIncome ;
+        int monthIncome;
 
         for (Map.Entry<Integer, ArrayList<MonthlyReport>> e : mapMonthReport.entrySet()) {
             monthIncome = e.getKey();
